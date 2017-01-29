@@ -1,4 +1,4 @@
-#ファイルから入力(read)
+##ファイルから入力(read)
 i=1
 while read line
 do
