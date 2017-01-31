@@ -1,0 +1,211 @@
+#!/bin/bash
+#変数
+s="hello"
+echo $s
+echo "{$s}"
+echo $s $s
+echo $s $s
+echo '$s'
+
+#四則演算
+x=10
+echo `expr $x - 2`
+echo `expr $x / 2`
+echo `expr $x \* 2`
+
+#足し算を左記にする時
+echo `expr \( $x + 5 \) \* 2`
+
+#配列1
+a=(2 4 6)
+echo $a
+echo ${a[1]} #4が表示
+
+echo ${a[@]} #すべて表示
+echo ${#a[@]} #要素数を表示
+
+a[2]=10 #要素数の２番目を10に変更
+echo ${a[@]}
+
+a+=(20 30) #要素に20 30を追加
+echo ${a[@]}
+
+d=(`date`)
+echo ${d[3]} #コマンド結果の３カラム目を表示
+
+#条件式
+##数値評価
+
+test 1 -eq 2
+echo $? #1=2を評価して、その結果を表示
+
+test 1 -eq 1
+echo $? #1=1を評価して、その結果を表示
+
+test 1 -ne 3
+echo $? #not equal
+
+test 2 -gt 1
+echo $? #greater than
+
+test 2 -ge 2
+echo $? #greater than equal
+
+test 2 -lt 3
+echo $? #less than
+
+test 2 -le 2
+echo $? #less than equal
+
+##文字列比較
+test A = A
+echo $? #文字列が等しい
+
+test A!=S
+echo $? #文字列が等しくない
+
+##ファイルi デイレクトリ比較
+test BBB.txt -nt AAA.txt
+echo $? #BBB.txtがAAA.txtよりもあたらしい　Modify時刻を比較する
+
+
+test AAA.txt -ot BBB.txt
+echo $? #AAA.txtがBBB.txtよりも古い Modify時刻を比較する
+
+
+test -e AAA.txt
+echo $? #ファイルが存在しているかどうか
+
+test -d AAA
+echo $? #デイレクトリが存在しているどうか
+
+#if文
+x=70
+if [ $x -gt 80 ]; then
+ echo "ok"
+elif [ $x -lt 60 ]; then
+ echo "soso..."
+else
+ echo "ng..."
+fi
+
+#case文
+SIGNAL=red
+signal=$SIGNAL
+ case $signal in
+  "red")
+    echo "stop!"
+  ;;
+  "yellow")
+    echo "coution!"
+  ;;
+  "blue")
+    echo "go!"
+  ;;
+  *)
+    echo "...!"
+  ;;
+ esac
+
+#while文
+i=0
+while [ $i -lt 10 ]
+ do
+  i=`expr $i + 1`
+  echo $i
+ done
+##while文　無限ループ
+#i=0
+# while :
+#  do
+#   i=`expr $i + 1`
+#   echo $i
+#  done
+
+##while文　特定数字スキップ 無限ループ回避
+i=0
+ while :
+ do
+   i=`expr $i + 1`
+   if [ $i -eq 4 ]; then
+    continue
+   fi
+
+   if [ $i -ge 21 ]; then
+    break
+   fi
+
+   echo $i
+ done
+
+#for文
+##基本
+for i in 1 2 3 4 5
+do
+ echo $i
+done
+
+##配列と併用する
+a=(10 20 30 40 50)
+for i in ${a[@]}
+do
+ echo $i
+done
+
+##数字を並べるのがめんどくさい
+for i in `seq 100 150`
+do
+ echo $i
+done
+
+#特殊変数
+echo $0
+echo $1
+echo $2
+echo ${10}
+
+echo $@
+echo $#
+
+#ユーザからの入力受付
+#while :
+#do
+# read key
+# echo "you pressed $key"
+# if [ $key = "c" ]; then
+#   break
+# fi
+#done
+
+##select文
+#select option in CODE DIE
+#do
+# echo "you pressed $option"
+# break;
+#done
+
+
+#ファイルから入力(read)
+i=1
+while read line
+do
+ echo "$i: $line"
+ i=`expr $i + 1`
+done < data.txt
+
+#関数
+hello() {
+ echo "hello $1 and $2"
+}
+
+hello Mike  Tom
+
+hello() {
+ echo "hello $1 and $2"
+ local i=A
+ echo $i
+
+}
+
+hello Mike Tom
+echo $i
